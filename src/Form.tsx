@@ -6,13 +6,15 @@ import {Divider} from '@mui/material'
 
 
 interface userData{
-  Name:string|null,
+  [key: string]: string[] | string | null;
+
+  name:string|null,
   firstName:string|null,
   lastName:string|null,
   gender:string|null,
   ethnicity:string|null,
   email:string[]|string |null,
-  phoneNo:number[]|string| null,
+  phoneNo:string[]|string| null,
   jobTitle:string[]|string|null,
   aboutMe:string[]|string |null,
   skills:string[]|string |null,
@@ -31,7 +33,7 @@ interface userData{
 
 const Form:React.FC= () => {
   const [userData,setUserdata]=useState<userData>({
-    "Name":localStorage.getItem('Name'),
+    "name":localStorage.getItem('name'),
     "firstName":localStorage.getItem('firstName'),
     "lastName":localStorage.getItem('lastName'),
     "gender":localStorage.getItem('gender'),
@@ -75,8 +77,8 @@ const handleInputChange = (event:any) => {
 };
 
 const handleKeyPress = (event:any) => {
-  if (event.key === 'Enter' && inputValue.trim() !== '') {
-    setChips([...chips, inputValue.trim()]);
+  if (event.key === 'Enter' && event.target.value.trim() !== '') {
+    setChips([...chips, event.target.value.trim()]);
     setInputValue('');
   }
 };
@@ -86,6 +88,10 @@ const handleChipDelete = (chipToDelete:string) => () => {
 };
 
 
+const handleOnchange=(value:string,field:string)=>{
+    console.log('running....')
+    setUserdata({...userData,[field]:value} )
+}
 
   useEffect(()=>{
 
@@ -103,31 +109,14 @@ const handleChipDelete = (chipToDelete:string) => () => {
         }
 
        )} */}
-
 {Object.keys(userData).map((field,index)=>{
+  if(field === 'skills')
+    next=1
+
   if(next){
-
-  }
-  else{
-    return<div>
-      <h3>Text-field</h3>
-        <TextField
-                label="Skills"
-                value={}
-                placeholder="Eg-Programming"
-                color='warning'>
-
-            </TextField>
-        </div>
-  
-  }
-})}
-
-
-
-<div>
-    <TextField
-      label="Skills"
+    <div key={index}>
+<TextField
+      label={field}
       placeholder="Eg-Programming"
       value={inputValue}
       color='success'
@@ -148,13 +137,35 @@ const handleChipDelete = (chipToDelete:string) => () => {
       ))}
     </div>
     <Divider/>
+
+    </div>
+  }
+  else{
+
+    return<div key={index}>
+        <TextField
+                label={field}
+                placeholder={`Enter Your ${field}`}
+                value={userData[field]||''}
+                color='warning' 
+                onChange={(event)=>handleOnchange(event.currentTarget.value,field)}
+                >
+                 
+
+            </TextField>
+        </div>
+  
+  }
+})}
+
+
+
   </div>
         <div className=''> 
         Yes sir
           <Button variant="contained" color="inherit" onClick={handleSubmit}>
               Submit
           </Button>
-        </div>
         </div>
         </div>
   )
