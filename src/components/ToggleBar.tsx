@@ -1,21 +1,18 @@
 import React from 'react'
 import { useState } from 'react'
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
 const ToggleBar:React.FC = () => {
 
     const[isOn,setisOn]=useState<boolean>(false)
 
- const handleOnToggle=()=>{
-        //remove all the event listeners of the extension.
-
-    }
 
   return (
-    <div className='w-36 h-36 rounded-full border hover:scale-95 bg-slate-100  flex flex-col justify-center items-center cursor-pointer' style={{boxShadow:`1px 5px 5px ${isOn?'blue':'red'}`}}  onClick={()=>{
+    <div className='w-36 h-36 rounded-full  hover:scale-95 bg-slate-100  flex flex-col justify-center items-center cursor-pointer transition-transform' style={{boxShadow:`1px 1px 5px ${isOn?'#357FDD':'red'}`,background:'#357FDD'}}  onClick={()=>{
         console.log('yes sir')
         setisOn(prevstate=>!prevstate)
     }}>
-    <span >Toggle</span>
+    <span ><PowerSettingsNewIcon fontSize='large' className='text-white' /></span>
 </div>
     )
 }

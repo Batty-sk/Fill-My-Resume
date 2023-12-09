@@ -9,14 +9,13 @@ const App:React.FC=()=> {
       event.preventDefault(); // Prevent the default form submission behavior
       // Your custom handling logic here
     };
-
   return (
-    <div className=''>
+    <div className='border'>
     <Header />
     <main>
-      <div className='flex flex-col items-center justify-center p-3 '>
+      <div className='flex flex-col items-center justify-center p-3  '>
           <ToggleBar />
-          <div className='mt-5'>
+          <div className='mt-5 bg-[#13191E]  w-[90%]' style={{borderRadius:'30px',boxShadow:'0px 0px 3px white'}}>
             <form onSubmit={handleSubmit}>
 
               <Form />
