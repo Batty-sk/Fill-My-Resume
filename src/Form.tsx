@@ -1,15 +1,15 @@
-import React, {useState } from "react";
+import React, {useState ,useEffect} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-/* 
-import Chip from "@mui/material/Chip";
-import { Divider } from "@mui/material"; */
 
-/* type multivaluesObject = {
+import Chip from "@mui/material/Chip";
+import { Divider } from "@mui/material";
+
+type multivaluesObject = {
   value: string;
-  chips:any;
+  chips:any[];
 };
-type multivalues = multivaluesObject; */
+type multivalues = multivaluesObject;
 type singlevalues = string ;
 
 
@@ -30,18 +30,19 @@ const Form: React.FC = () => {
   ,{label:'email',stateName:email,dispatcher:setEmail},{label:'phoneNo',stateName:phoneNo,dispatcher:setPhoneNo},
   {label:'jobTitle',stateName:jobTitle,dispatcher:setJobTitle},{label:'aboutMe',stateName:aboutMe,dispatcher:setAboutMe}]
 
-  /* const [skills, setSkills] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem('skills') || '')});
-   const [languages, setLanguages] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem('languages') ||'')  });
-  const [interPersonalSkills, setInterPersonalSkills] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem('interPersonalSkills') ||'' ) });
-  const [achivements,setAchivements]=useState<multivalues>({value:'',chips:JSON.parse(localStorage.getItem('achivements')||'')})
-  const [hobbies, setHobbies] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem("hobbies") || "")});
-  const [address, setAddress] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem("address") || "") });
-  const [workexperience, setWorkexperience] = useState<multivalues>({ value: "", chips:JSON.parse(localStorage.getItem("workexperience") || "")});
-  const [education, setEducation] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem("education") || "")});
-  const [projects, setProjects] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem("projects") || "" )});
-  const [socialMediaLinks, setSocialMediaLinks] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem("socialMediaLinks") || "")});
-  const [whyDoWeHireYou, setWhyDoWeHireYou] = useState<multivalues>({ value: "", chips: JSON.parse(localStorage.getItem("whyDoWeHireYou") || "")});
+  const [skills, setSkills] = useState<multivalues>({ value: "", chips: []})
+   const [languages, setLanguages] = useState<multivalues>({ value: "", chips:[]  });
+  const [interPersonalSkills, setInterPersonalSkills] = useState<multivalues>({ value: "", chips:[] });
+  const [achivements,setAchivements]=useState<multivalues>({value:"",chips:[]})
+  const [hobbies, setHobbies] = useState<multivalues>({ value: "", chips:[]});
+  const [address, setAddress] = useState<multivalues>({ value: "", chips: []});
+  const [workexperience, setWorkexperience] = useState<multivalues>({ value: "", chips:[]});
+  const [education, setEducation] = useState<multivalues>({ value: "", chips:[]});
+  const [projects, setProjects] = useState<multivalues>({ value: "", chips: [] });
+  const [socialMediaLinks, setSocialMediaLinks] = useState<multivalues>({ value: "", chips: []});
+  const [whyDoWeHireYou, setWhyDoWeHireYou] = useState<multivalues>({ value: "", chips: []});
   const multiValuesArray = [
+
     { label: 'skills', state: skills, dispatcher: setSkills },
     { label: 'languages', state: languages, dispatcher: setLanguages },
     { label: 'interPersonalSkills', state: interPersonalSkills, dispatcher: setInterPersonalSkills },
@@ -53,7 +54,27 @@ const Form: React.FC = () => {
     { label: 'projects', state: projects, dispatcher: setProjects },
     { label: 'socialMediaLinks', state: socialMediaLinks, dispatcher: setSocialMediaLinks },
     { label: 'whyDoWeHireYou', state: whyDoWeHireYou, dispatcher: setWhyDoWeHireYou }
-  ];  */
+  ]; 
+
+  useEffect(() => {
+
+    
+                multiValuesArray.map((item)=>{
+
+                const skillsString = localStorage.getItem(item.label);
+
+                  try {
+                    const skillsData = skillsString ? JSON.parse(skillsString) : [];
+                    item.dispatcher({value:'',chips:skillsData})
+                  } catch (error) {
+
+                          item.dispatcher({value:'',chips:[]})
+                  }
+                }
+                )
+    
+  }, [])
+  
   // we need to parse it
   //let next = 0;
 
@@ -68,36 +89,51 @@ const Form: React.FC = () => {
  /*  const [inputValue, setInputValue] = useState<string>("");
   const [chips, setChips] = useState<string[]>([]); */
 
-/*   const handleKeyPress = (event: any) => {
-    if (event.key === "Enter" && event.target.value.trim() !== "") {
-      setChips([...chips, event.target.value.trim()]);
-      setInputValue("");
-    }
-  }; */
-/* 
 
- */
+
+
+  const handleKeyPress = (event: any,index:number) => {
+    
+    if (event.key === "Enter" && event.target.value.trim() !== "") {
+       multiValuesArray[index].dispatcher({value:'',chips:[ ...multiValuesArray[index].state.chips,event.target.value.trim()]})
+    }
+  };
+
+
   const handleOnchange = (value: string,index:number,) => {
     singleArray[index].dispatcher(value)
 
   };
- /*   const handleOnMultiChange=(value:string,index:number)=>{
+   const handleOnMultiChange=(value:string,index:number)=>{
 
     const chips = multiValuesArray[index].state.chips
     multiValuesArray[index].dispatcher({value:value,chips:[...chips]})
  
-  }  */
+  } 
 
   const handleSubmit=()=>{
 
     singleArray.map(x=>{
       localStorage.setItem(x.label,x.stateName)
     })
-/*     multiValuesArray.map(x=>{
+    multiValuesArray.map(x=>{
       localStorage.setItem(x.label,JSON.stringify(x.state.chips))
-    }) */
+    })
+
+    console.log('saved to the local storage...')
 
   }
+
+  const handleReset=()=>{
+    singleArray.map(x=>{
+      x.dispatcher('')
+    })
+    multiValuesArray.map(x=>{
+      x.dispatcher({value:'',chips:[]})
+    })
+
+    console.log('reset completed!')
+  } 
   return (
     <div className="p-8">
       <div className="flex justify-around flex-wrap">
@@ -120,7 +156,6 @@ const Form: React.FC = () => {
                     return <div key={stateInfo.label} className="mt-3 w-40 me-2" >
                 <TextField
                   label={stateInfo.label}
-
                   placeholder={`Enter Your ${stateInfo.label}`}
                   value={stateInfo.stateName}
                   color="info"
@@ -133,36 +168,40 @@ const Form: React.FC = () => {
           }    )}
           </div>
 
-      {/*     {multiValuesArray.map((stateInfo,index)=>{
+          <div className="w-[100%] flex flex-wrap justify-center mb-8">
+          {multiValuesArray.map((stateInfo,index)=>{
 
-            return<div key={stateInfo.label}>
+            return<div key={stateInfo.label} className="mt-3 w-40 me-2">
                <TextField
                     label={stateInfo.label}
                     placeholder={`Enter ${stateInfo.label}`}
-                    value={stateInfo.state}
+                    value={stateInfo.state.value}
                     color="success"
-                    multiline
+                    multiline={true}
+                    rows={5}
                     className="w-[100%]"
+                    sx={{background:'#859ca7',width:'100%'}}
+
                     onChange={(x)=>
                       handleOnMultiChange(x.currentTarget.value,index)
                     }
-                    onKeyPress={handleKeyPress}
+                     onKeyPress={(event)=>{handleKeyPress(event,index)}} 
                   />
                   <div style={{ marginTop: 10 }}>
-                    {chips.map((chip, index) => (
+                    {stateInfo.state?.chips?.map((chip, index) => (
                       <Chip
                         key={index}
                         label={chip}
-                        onDelete={handleChipDelete(chip)}
-                        style={{ marginRight: 5 }}
+                          style={{ marginRight: 5 }}
                       />
                     ))}
                   </div>
-                  <Divider />/
+                  <Divider />
             </div>
           }
           )}
- */}
+          </div>
+
  <div className="flex justify-evenly">
         <Button variant="contained" color="primary" onClick={handleSubmit}>
           Save
