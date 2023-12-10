@@ -111,6 +111,14 @@ const Form: React.FC = () => {
  
   } 
 
+  const handleChipDelete=(chipTodelete:string,index:number)=>{
+    const filteredChips=multiValuesArray[index].state.chips?.filter(x=>x!==chipTodelete)
+
+    multiValuesArray[index].dispatcher({value:'',chips:filteredChips})
+
+  }
+
+
   const handleSubmit=()=>{
 
     singleArray.map(x=>{
@@ -188,11 +196,12 @@ const Form: React.FC = () => {
                      onKeyPress={(event)=>{handleKeyPress(event,index)}} 
                   />
                   <div style={{ marginTop: 10 }}>
-                    {stateInfo.state?.chips?.map((chip, index) => (
+                    {stateInfo.state?.chips?.map((chip, i) => (
                       <Chip
-                        key={index}
+                        key={i}
                         label={chip}
                           style={{ marginRight: 5 }}
+                        onDelete={()=>{handleChipDelete(chip,index)}}
                       />
                     ))}
                   </div>
@@ -207,7 +216,7 @@ const Form: React.FC = () => {
           Save
         </Button>
 
-        <Button variant="outlined" color="secondary">
+        <Button variant="outlined" color="secondary" onClick={handleReset}>
           Reset
         </Button>
       </div>
