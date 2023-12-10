@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h1>Jai Shree Ram</h1>
+    <form action="">
+        <input type="text" name="name" id="" placeholder="enter your name">
+        <input type="number" placeholder="enter your number">
+    </form>
+    
+    <script>
+     // Create the suggestion container
+     const suggestionContainer = document.createElement("div");
+suggestionContainer.id = "suggestion-container";
+suggestionContainer.style.position = "fixed";
+suggestionContainer.style.borderRadius = "8px";
+suggestionContainer.style.boxShadow = "1px 4px 8px rgba(0, 0, 0, 0.5)";
+suggestionContainer.style.maxHeight = "350px";
+suggestionContainer.style.height = "250px";
+suggestionContainer.style.maxWidth = "400px";
+suggestionContainer.style.width = "400px";
+suggestionContainer.style.background = "linear-gradient(135deg, white, skyblue)";
+suggestionContainer.style.color = "#ecf0f1";
+suggestionContainer.style.flexWrap = "wrap";
+suggestionContainer.style.padding = "10px";
+suggestionContainer.style.zIndex = "999";
+
+// Apply scrollbar styles
+
+// Create the close button
+const closeButton = document.createElement("div");
+closeButton.style.textAlign = "right";
+closeButton.style.fontFamily='monospace'
+closeButton.innerText = "X";
+closeButton.style.color = "#e74c3c";
+closeButton.style.fontSize = "38px";
+closeButton.style.cursor = "pointer";
+
+
+const suggestion = document.createElement("div");
+suggestion.style.marginTop='2px'
+suggestion.style.fontFamily='monospace'
+suggestion.style.color='black'
+suggestion.style.display = "flex";
+suggestion.style.flexWrap='wrap'
+suggestion.style.justifyContent = "space-around";
+
+
+const container = document.createElement("div");
+container.style.textAlign='center'
+            const heading = document.createElement("h3");
+            heading.innerText='Name'
+            const item = document.createElement("span");
+            item.style.padding='15px'
+            item.style.background='white'
+            item.style.borderRadius='20%'
+            item.style.cursor = "pointer";
+            item.innerText='Hi'
+            container.appendChild(heading)
+            container.appendChild(item)
+
+
+        suggestion.appendChild(container)
+suggestionContainer.appendChild(closeButton)
+suggestionContainer.appendChild(suggestion)
+const hr=document.createElement('hr')
+hr.style.border='1px outset black'
+hr.style.color='pink'
+hr.style.margin='10px'
+hr.style.marginTop='50px'
+suggestionContainer.appendChild(hr)
+document.body.appendChild(suggestionContainer)
+    </script>
+</body>
+</html>

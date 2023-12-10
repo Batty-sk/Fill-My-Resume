@@ -9,121 +9,8 @@ const handleMessage = (Data, sender, CallBackFun) => { //isme sida suggestion co
   singleFields=Data.singleValues
   multiFields=Data.multiValues
 
-    const CreateContainer=()=>{
-      const suggestionContainer = document.createElement("div");
-      suggestionContainer.id = "suggestion-container";
-      suggestionContainer.className = "suggestion-container";
-      suggestionContainer.style.display = "none";
-      suggestionContainer.style.position = "fixed";
-      suggestionContainer.style.top = "50%";
-      suggestionContainer.style.left = "50%";
-      suggestionContainer.style.transform = "translate(-50%, -50%)";
-      suggestionContainer.style.borderRadius = "8px";
-      suggestionContainer.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
-      suggestionContainer.style.maxHeight = "350px";
-      suggestionContainer.style.height = "250px";
-      suggestionContainer.style.maxWidth = "200px";
-      suggestionContainer.style.width = "150px";
-      suggestionContainer.style.overflowY = "auto";
-      suggestionContainer.style.background = "#3498db";
-      suggestionContainer.style.color = "#ecf0f1";
-      suggestionContainer.style.display = "flex";
-      suggestionContainer.style.flexWrap = "wrap";
-      suggestionContainer.style.justifyContent = "space-evenly";
-      suggestionContainer.style.padding = "10px";
-      
-      const closeButton = document.createElement("div");
-      closeButton.innerText = "X";
-      closeButton.style.color = "#e74c3c";
-      closeButton.style.fontSize = "18px";
-      closeButton.style.cursor = "pointer";
-      closeButton.style.position = "absolute";
-      closeButton.style.top = "8px";
-      closeButton.style.right = "8px";
-      
-      closeButton.onclick = () => {
-          suggestionContainer.style.display = "none";
-      };
-      
-      suggestionContainer.appendChild(closeButton);
-      
-   let  tempSFields=Object.keys(singleFields)
-
-   let multiSFields=Object.keys(multiFields)
-
-      console.log('temps and multis',tempSFields,multiSFields)
 
 
-
-   const handleUserSelection = (selection) => {
-      console.log("on click", selection);
-    };
-
-
-
-    for (let i = 1; i <= 2; i++) {
-      const suggestion = document.createElement("div");
-
-      suggestion.style.display = "flex";
-      suggestion.style.justifyContent = "space-evenly";
-  
-      if (i == 1) {
-        tempSFields?.map((x,i) => {
-            const container = document.createElement("div");
-            const heading = document.createElement("h3");
-            const item = document.createElement("span");
-            item.style.cursor = "pointer";
-            item.onclick = () => {
-              handleUserSelection(singleFields[x]);
-            }
-            
-            heading.innerText = x;
-            item.innerText = singleFields[x];
-  
-            suggestion.appendChild(container);
-  
-            container.appendChild(heading);
-            container.appendChild(item);
-            suggestion.appendChild(container)
-          
-        });
-      } else {
-          suggestion.appendChild(document.createElement('hr'))
-        multiSFields?.map((x, i) => {
-            const container = document.createElement("div");
-            const heading = document.createElement("h1");
-            heading.innerText=x
-            const containerChips = document.createElement("div");
-            containerChips.style.display = "flex";
-            container.style.flexWrap = "wrap";
-            containerChips.style.justifyContent = "space-evenly";
-
-
-            multiFields[x].map((v) => {
-              const item = document.createElement("span");
-              item.style.cursor = "pointer";
-              item.onclick = () => {
-                handleUserSelection(v);
-              };
-              item.innerText = x;
-              containerChips.appendChild(item);
-            });
-  
-            container.appendChild(heading);
-            container.appendChild(containerChips);
-            suggestion.appendChild(container);
-          })
-      }
-  
-      suggestionContainer.appendChild(suggestion);
-    }
-
-
-
-    return suggestionContainer
-    }
-
-    FilledContainer=CreateContainer()
 
     console.log('filled container ',FilledContainer)
 
@@ -151,7 +38,7 @@ const handleMessage = (Data, sender, CallBackFun) => { //isme sida suggestion co
   if (inputElements) {
     for (let i = 0; i < inputElements.length; i++) {
       inputElements[i].removeEventListener("focus", handleInputClick);
-      inputElements[i].addEventListener("focus", handleInputClick);
+      inputElements[i].addEventListener   ("focus", handleInputClick);
 
     }
   }
@@ -172,11 +59,172 @@ const handleMessage = (Data, sender, CallBackFun) => { //isme sida suggestion co
 const handleCreateAndInsert = (event) => {
   // Create a div element for the suggestions
 
-  //handling the userselection
-  const inputElement = event.target;
 
-  const keys = Object.keys(localStorage);
-  console.log('local storage babay',keys,localStorage.getItem('name'))
+  const inputElement = event.target;
+  //handling the userselection
+
+
+
+  const handleUserSelection = (selection) => {
+      inputElement.value=inputElement.value+' '+selection+' '
+      console.log("on click", selection);
+    };
+
+
+    
+  const CreateContainer=()=>{
+      const container=document.getElementById('suggestion-container')
+      if(container)
+          container.remove()
+
+          const suggestionContainer = document.createElement("div");
+          suggestionContainer.id = "suggestion-container";
+          suggestionContainer.style.position = "fixed";
+          suggestionContainer.style.borderRadius = "8px";
+          suggestionContainer.style.boxShadow = "1px 4px 8px rgba(0, 0, 0, 0.5)";
+          suggestionContainer.style.maxHeight = "350px";
+          suggestionContainer.style.height = "250px";
+          suggestionContainer.style.maxWidth = "400px";
+          suggestionContainer.style.width = "300px";
+          suggestionContainer.style.background = "linear-gradient(135deg, white, skyblue)";
+          suggestionContainer.style.color = "#ecf0f1";
+          suggestionContainer.style.padding = "10px";
+          suggestionContainer.style.zIndex = "999";
+          suggestionContainer.style.overflow='auto'
+          
+          suggestionContainer.style.scrollbarColor = "transparent transparent";
+
+          // Add styles for WebKit browsers
+          suggestionContainer.style.scrollbarWidth = "thin";
+          suggestionContainer.style.scrollbarTrackColor = "#f0f0f0";
+          suggestionContainer.style.scrollbarFaceColor = "linear-gradient(45deg, #4CAF50, #2196F3)";
+          suggestionContainer.style.scrollbarHighlightColor = "transparent";
+          suggestionContainer.style.scrollbarShadowColor = "transparent";
+
+          // Apply scrollbar styles
+          
+          // Create the close button
+          const closeButton = document.createElement("div");
+          closeButton.style.textAlign = "right";
+          closeButton.style.fontFamily='monospace'
+          closeButton.innerText = "X";
+          closeButton.style.color = "#e74c3c";
+          closeButton.style.fontSize = "38px";
+          closeButton.style.cursor = "pointer";
+  
+      
+      closeButton.onclick = () => {
+          const container=document.getElementById('suggestion-container')
+          if(container)
+              container.remove()
+      };
+      
+      suggestionContainer.appendChild(closeButton);
+      
+   let  tempSFields=Object.keys(singleFields)
+
+   let multiSFields=Object.keys(multiFields)
+
+
+   
+    for (let i = 1; i <= 2; i++) {
+      const suggestion = document.createElement("div");
+      suggestion.style.paddingBottom='20px'
+      suggestion.style.fontFamily='monospace'
+      suggestion.style.color='black'
+      suggestion.style.display = "flex";
+      suggestion.style.flexWrap='wrap'
+      suggestion.style.justifyContent = "space-around";
+  
+      if (i == 1) {
+        tempSFields?.map((x,i) => {
+          const container = document.createElement("div");
+          container.style.margin='5px'
+          container.style.textAlign='center'
+                      const heading = document.createElement("h3");
+                      heading.innerText=x
+                      const item = document.createElement("span");
+                      item.style.padding='15px'
+                      item.style.background='white'
+                      item.style.borderRadius='20%'
+                      item.style.cursor = "pointer";
+                      item.innerText=singleFields[x]
+                      container.appendChild(heading)
+                      container.appendChild(item)
+        
+          
+            item.onclick = () => {
+              handleUserSelection(singleFields[x]);
+              console.log('single fields',singleFields[x])
+            }
+            
+            container.appendChild(heading);
+            container.appendChild(item);
+            suggestion.appendChild(container)
+          
+        });
+      } else {
+        const hr=document.createElement('hr')
+        hr.style.border='1px outset black'
+        hr.style.color='pink'
+
+        hr.style.margin='10px'
+        hr.style.marginTop='50px'
+
+        suggestion.appendChild(hr)
+
+
+
+                multiSFields?.map((x, i) => {
+
+                  
+            const container = document.createElement("div");
+            container.style.textAlign='center'
+            container.style.margin='5px'
+            const heading = document.createElement("h3");
+              heading.innerText=x
+            const containerChips = document.createElement("div");
+            containerChips.style.display = "flex";
+            container.style.flexWrap = "wrap";
+            container.style.padding='15px'
+            container.style.background='white'
+            container.style.borderRadius='20%'
+            containerChips.style.justifyContent = "space-evenly";
+
+            multiFields[x].map((v) => {
+              const item = document.createElement("span");
+              item.style.padding='5px'
+              item.style.background='whitesmoke'
+              item.style.width='fit'
+              item.style.maxWidth='100px'
+              item.style.borderRadius='30%'
+              item.style.textOverflow='ellipsis'
+              item.style.cursor = "pointer";              item.onclick = (x) => {
+                handleUserSelection(v);
+                
+              };
+              item.innerText = x;
+              containerChips.appendChild(item);
+            });
+  
+            container.appendChild(heading);
+            container.appendChild(containerChips);
+            suggestion.appendChild(container);
+          })
+      }
+  
+      suggestionContainer.appendChild(suggestion);
+    }
+
+
+
+    return suggestionContainer
+    }
+
+
+      FilledContainer=CreateContainer()
+
+
 
   const inputRect = inputElement.getBoundingClientRect();
   console.log("createing bro", inputElement, inputRect);
@@ -195,7 +243,7 @@ const handleCreateAndInsert = (event) => {
 
   FilledContainer.style.display='block'
   console.log('rendering the filled container',FilledContainer)
- setTimeout(()=>parent.appendChild(FilledContainer),400)
+parent.appendChild(FilledContainer)
 };
 
 

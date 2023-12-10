@@ -1,6 +1,7 @@
 import React, {useState ,useEffect} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { Close } from "@mui/icons-material";
 
 import Chip from "@mui/material/Chip";
 import { Divider } from "@mui/material";
@@ -179,7 +180,7 @@ const Form: React.FC = () => {
           <div className="w-[100%] flex flex-wrap justify-center mb-8">
           {multiValuesArray.map((stateInfo,index)=>{
 
-            return<div key={stateInfo.label} className="mt-3 w-40 me-2">
+            return<div key={stateInfo.label} className="mt-3 w-fit me-2 flex flex-wrap">
                <TextField
                     label={stateInfo.label}
                     placeholder={`Enter ${stateInfo.label}`}
@@ -195,15 +196,21 @@ const Form: React.FC = () => {
                     }
                      onKeyPress={(event)=>{handleKeyPress(event,index)}} 
                   />
-                  <div style={{ marginTop: 10 }}>
+                  <div style={{ marginTop: 10 }} className="flex flex-wrap">
                     {stateInfo.state?.chips?.map((chip, i) => (
-                      <Chip
+                      <Button variant="contained" className="bg-transparent rounded-full" key={i} endIcon={<Close onClick={()=>{handleChipDelete(chip,index)}}
+                      />}>
+                          <Chip
                         key={i}
                         label={chip}
+                        className="bg-gray-200"
                           style={{ marginRight: 5 }}
-                        onDelete={()=>{handleChipDelete(chip,index)}}
+                        
                       />
-                    ))}
+                  
+                      </Button>
+          ))}
+                    
                   </div>
                   <Divider />
             </div>
