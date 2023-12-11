@@ -2,17 +2,15 @@
 let singleFields=null
 let multiFields=null
 let FilledContainer=null
+let isON=true
 
 const handleMessage = (Data, sender, CallBackFun) => { 
   const inputElements = document.getElementsByTagName("input");
   const textAreaElements = document.getElementsByTagName("textarea");
 
   const handleInputClick = (eve) => {
-    console.log("ys sir input sir", eve);
     handleCreateAndInsert(eve);
   };
-//isme sida suggestion contatiner bhejneka 
-  console.log("Background script sent a message:", Data);
   if(Data === 'turnOFF')
   {
     console.log('turining off .....')
@@ -25,31 +23,17 @@ const handleMessage = (Data, sender, CallBackFun) => {
       for (let i = 0; i < textAreaElements.length; i++) {
         textAreaElements[i]?.removeEventListener("focus", handleInputClick);
       }}
+      isON=false
+
 
       return 
   }
 
+  isON=true
+
 
   singleFields=Data.singleValues
   multiFields=Data.multiValues
-
-    console.log('filled container ',FilledContainer)
-
-
-
-
-
-  
-
-
-  
-
-  console.log(
-    "input lements",
-    inputElements,
-    "textAreaelements",
-    textAreaElements
-  );
   if (inputElements) {
     for (let i = 0; i < inputElements.length; i++) {
       inputElements[i].removeEventListener("focus", handleInputClick);
@@ -81,8 +65,17 @@ const handleCreateAndInsert = (event) => {
 
 
   const handleUserSelection = (selection) => {
-      inputElement.value=inputElement.value+' '+selection+' '
-      console.log("on click", selection);
+
+      let result = parseInt(selection, 10);
+
+      if (isNaN(result)) {
+        
+        inputElement.value=inputElement.value+' '+selection+' '
+
+      } else {
+        inputElement.value=result
+
+        }
     };
 
 
@@ -140,6 +133,10 @@ const handleCreateAndInsert = (event) => {
 
    let multiSFields=Object.keys(multiFields)
 
+   if(!tempSFields.length && !multiSFields.length)
+          return false
+    if(!isON)
+        return false
 
    
     for (let i = 1; i <= 2; i++) {
@@ -173,7 +170,6 @@ const handleCreateAndInsert = (event) => {
           
             item.onclick = () => {
               handleUserSelection(singleFields[x]);
-              console.log('single fields',singleFields[x])
             }
             
             container.appendChild(heading);
@@ -217,7 +213,7 @@ const handleCreateAndInsert = (event) => {
               item.style.borderRadius='30%'
               item.style.textOverflow='ellipsis'
               item.style.cursor = "pointer";              item.onclick = (x) => {
-                handleUserSelection(v);
+                handleUserSelection(','+v);
                 
               };
               item.innerText = x;
@@ -240,17 +236,16 @@ const handleCreateAndInsert = (event) => {
 
 
       FilledContainer=CreateContainer()
-
+      if(!FilledContainer)
+            return 
 
 
   const inputRect = inputElement.getBoundingClientRect();
-  console.log("createing bro", inputElement, inputRect);
 
   const height = inputRect.height;
 
   const parent = inputElement.parentElement;
 
-  console.log('children rectbound and parent',inputRect.top,parent.getBoundingClientRect().height)
   parent.style.position = "relative";
   FilledContainer.style.position = "absolute";
 
@@ -260,7 +255,6 @@ const handleCreateAndInsert = (event) => {
 
   
   FilledContainer.style.display='block'
-  console.log('rendering the filled container',FilledContainer)
 parent.appendChild(FilledContainer)
 };
 
@@ -269,4 +263,4 @@ parent.appendChild(FilledContainer)
 // now we have to attach the event listener here so it can process the request coming from the background Script..
 
 chrome.runtime.onMessage.addListener(handleMessage);
-console.log("event listenenre started...");
+console.log("fill my resume has been started...");

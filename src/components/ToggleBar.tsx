@@ -1,19 +1,30 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { Switch } from '@mui/material';
 const ToggleBar:React.FC = () => {
 
     const[isOn,setisOn]=useState<boolean>(true)
 
+    useEffect(() => {
+      const state = localStorage.getItem('fmf') // returns the state of the extension
+      if(state){
+        setisOn(JSON.parse(state))
+      }
+      else{
+        localStorage.setItem('fmf','true')
+      }
+    },[])
+    
 
     const handleOnChange=()=>{
 
         setisOn(prevstate=>!prevstate)
         if(isOn){
-            console.log('is ON',isOn    )
+            localStorage.setItem('fmf','false')
             chrome.runtime.sendMessage('turnOFF')
         }
         else{
+            localStorage.setItem('fmf','true')
             chrome.runtime.sendMessage('turnON')
         }
     }

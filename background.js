@@ -5,29 +5,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       if (tabs && tabs[0]) {
         chrome.tabs.sendMessage(tabs[0].id, 'turnOFF', function(response) {
-          console.log('Message sent to content script');
+          console.log('sending turning off request');
         });
       }
     });
       }
-  else if('turnON'){
+  else if(message === 'turnON'){
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       if (tabs && tabs[0]) {
         chrome.tabs.sendMessage(tabs[0].id,CreateContainer(), function(response) {
-          console.log('Message sent to content script');
+          console.log('sending turning On Reuest');
         });
       }
     });
-
+  }
 
 });
 
 const onPageLoad =(tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete') {
-    console.log(`Tab ${tabId} has finished loading`,changeInfo,tab);
+  const isSet=localStorage.getItem('fmf')
+  if(isSet == null)
+      return
+
+  if (changeInfo.status === 'complete' && JSON.parse(isSet)) {
     chrome.tabs.sendMessage(tabId,CreateContainer(),(msg)=>{
 
-      console.log('call back called',msg)
     });
     }
 };
@@ -76,7 +78,6 @@ for (let i = 1; i <= 2; i++) {
       if (isValue) {
           singleValuesObject[x]=isValue
       } else {
-        console.log("isValues is false in singleArray", isValue);
       }
       
     });
@@ -91,7 +92,6 @@ for (let i = 1; i <= 2; i++) {
         multiValuesObject[x]=arr
 
       } else {
-        console.log("is value is  in multi-fields", isValue);
       }
     });
   }

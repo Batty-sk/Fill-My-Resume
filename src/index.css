@@ -19,7 +19,7 @@ body {
   place-items: center;
   min-width: 500px;
   max-width: 500px;
-  background: linear-gradient(159deg, #e9ecff, white);
+  background: linear-gradient(159deg, #fafaff, white);
   height: 350px;
   overflow-y: auto;
 }
@@ -52,7 +52,7 @@ button:focus-visible {
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 15px;
 }
 
 ::-webkit-scrollbar-track {

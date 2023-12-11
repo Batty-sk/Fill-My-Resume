@@ -10,6 +10,7 @@ const App:React.FC=()=> {
       // Your custom handling logic here
     };
   return (
+    
     <div className='h-[100%]'>
     <Header />
     <main>

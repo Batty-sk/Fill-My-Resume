@@ -144,7 +144,7 @@ const Form: React.FC = () => {
     console.log('reset completed!')
   } 
   return (
-    <div className="p-8">
+    <div className="p-8" style={{border:'1px solid black'}}>
     <div className="flex justify-around flex-wrap">
       <div className="w-[100%] flex flex-wrap justify-center  font-mono" >
         {singleArray.map((stateInfo, index) => (
@@ -206,7 +206,7 @@ const Form: React.FC = () => {
       </div>
 
       <div className="flex w-[100%] justify-evenly">
-        <Button variant="contained" className="w-24" onClick={handleSubmit} >
+        <Button variant="contained" className="w-24 text-black bg-white" onClick={handleSubmit} >
         <DoneOutlineIcon/>
         </Button>
 
