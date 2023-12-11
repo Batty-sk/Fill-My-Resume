@@ -2,7 +2,7 @@
 
 1. Clone the repository to your local machine:
 
-git clone https://github.com/your-username/your-extension.git
+git clone https://github.com/Batty-sk/Fill-My-Resume.git
 Navigate to the extension directory:
 cd your-extension
 
