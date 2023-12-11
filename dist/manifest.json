@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Fill My Resume",
+  "version": "2",
+  "description": "Description of your extension",
+  "icons": {
+    "16": "./fill-my-resume.png",
+    "48": "./fill-my-resume-48.png",
+    "128": "./fill-my-resume-128.png"
+  },
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": ["activeTab","webNavigation","tabs","<all_urls>","storage"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  }
+}
