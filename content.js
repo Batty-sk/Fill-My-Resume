@@ -3,14 +3,17 @@ let singleFields=null
 let multiFields=null
 let FilledContainer=null
 let isON=true
+let isDragging = false;
 
 const handleMessage = (Data, sender, CallBackFun) => { 
   const inputElements = document.getElementsByTagName("input");
   const textAreaElements = document.getElementsByTagName("textarea");
 
   const handleInputClick = (eve) => {
+    console.log("ys sir input sir", eve);
     handleCreateAndInsert(eve);
   };
+  console.log("Background script sent a message:", Data);
   if(Data === 'turnOFF')
   {
     console.log('turining off .....')
@@ -34,11 +37,29 @@ const handleMessage = (Data, sender, CallBackFun) => {
 
   singleFields=Data.singleValues
   multiFields=Data.multiValues
+
+    console.log('filled container ',FilledContainer)
+
+
+
+
+
+  
+
+
+  
+
+  console.log(
+    "input lements",
+    inputElements,
+    "textAreaelements",
+    textAreaElements
+  );
   if (inputElements) {
     for (let i = 0; i < inputElements.length; i++) {
       inputElements[i].removeEventListener("focus", handleInputClick);
       inputElements[i].addEventListener   ("focus", handleInputClick);
-
+      
     }
   }
 
@@ -86,6 +107,7 @@ const handleCreateAndInsert = (event) => {
           container.remove()
 
           const suggestionContainer = document.createElement("div");
+          
           suggestionContainer.id = "suggestion-container";
           suggestionContainer.style.position = "fixed";
           suggestionContainer.style.borderRadius = "8px";
@@ -115,6 +137,8 @@ const handleCreateAndInsert = (event) => {
           const closeButton = document.createElement("div");
           closeButton.style.textAlign = "right";
           closeButton.style.fontFamily='monospace'
+          closeButton.style.position='sticky'
+          closeButton.style.top='0px';
           closeButton.innerText = "X";
           closeButton.style.color = "#e74c3c";
           closeButton.style.fontSize = "38px";
@@ -137,6 +161,7 @@ const handleCreateAndInsert = (event) => {
           return false
     if(!isON)
         return false
+    console.log('issss on brother ',isON)
 
    
     for (let i = 1; i <= 2; i++) {
@@ -170,6 +195,7 @@ const handleCreateAndInsert = (event) => {
           
             item.onclick = () => {
               handleUserSelection(singleFields[x]);
+              console.log('single fields',singleFields[x])
             }
             
             container.appendChild(heading);
@@ -216,7 +242,7 @@ const handleCreateAndInsert = (event) => {
                 handleUserSelection(','+v);
                 
               };
-              item.innerText = x;
+              item.innerText = v;
               containerChips.appendChild(item);
             });
   
@@ -241,11 +267,13 @@ const handleCreateAndInsert = (event) => {
 
 
   const inputRect = inputElement.getBoundingClientRect();
+  console.log("createing bro", inputElement, inputRect);
 
   const height = inputRect.height;
 
   const parent = inputElement.parentElement;
 
+  console.log('children rectbound and parent',inputRect.top,parent.getBoundingClientRect().height)
   parent.style.position = "relative";
   FilledContainer.style.position = "absolute";
 
@@ -255,6 +283,7 @@ const handleCreateAndInsert = (event) => {
 
   
   FilledContainer.style.display='block'
+  console.log('rendering the filled container',FilledContainer)
 parent.appendChild(FilledContainer)
 };
 
@@ -263,4 +292,4 @@ parent.appendChild(FilledContainer)
 // now we have to attach the event listener here so it can process the request coming from the background Script..
 
 chrome.runtime.onMessage.addListener(handleMessage);
-console.log("fill my resume has been started...");
+console.log("event listenenre started...");
