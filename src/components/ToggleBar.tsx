@@ -1,19 +1,29 @@
 import React from 'react'
 import { useState } from 'react'
-import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-
+import { Switch } from '@mui/material';
 const ToggleBar:React.FC = () => {
 
-    const[isOn,setisOn]=useState<boolean>(false)
+    const[isOn,setisOn]=useState<boolean>(true)
 
 
-  return (
-    <div className='w-36 h-36 rounded-full  hover:scale-95 bg-slate-100  flex flex-col justify-center items-center cursor-pointer transition-transform' style={{boxShadow:`1px 1px 5px ${isOn?'#357FDD':'red'}`,background:'#357FDD'}}  onClick={()=>{
-        console.log('yes sir')
+    const handleOnChange=()=>{
+
         setisOn(prevstate=>!prevstate)
-    }}>
-    <span ><PowerSettingsNewIcon fontSize='large' className='text-white' /></span>
+        if(isOn){
+            console.log('is ON',isOn    )
+            chrome.runtime.sendMessage('turnOFF')
+        }
+        else{
+            chrome.runtime.sendMessage('turnON')
+        }
+    }
+  return (
+    <>
+    <div className='flex flex-col justify-center '>
+    <Switch  color='warning' checked={isOn } className='z-50' onChange={handleOnChange} />
+
 </div>
+    </>
     )
 }
 

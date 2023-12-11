@@ -1,11 +1,11 @@
 import React, {useState ,useEffect} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { Close } from "@mui/icons-material";
 
 import Chip from "@mui/material/Chip";
 import { Divider } from "@mui/material";
-
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 type multivaluesObject = {
   value: string;
   chips:any[];
@@ -145,91 +145,78 @@ const Form: React.FC = () => {
   } 
   return (
     <div className="p-8">
-      <div className="flex justify-around flex-wrap">
-        {" "}
-        {/* dyanamically generated would be better option */}
-        {/*         {Object.keys(userData).map((key) => {
-        return  <div className='bg-white' key={key}>
-          <p>
-            tell me bro
-          </p>
-            Yes sir
+    <div className="flex justify-around flex-wrap">
+      <div className="w-[100%] flex flex-wrap justify-center  font-mono" >
+        {singleArray.map((stateInfo, index) => (
+          <div key={stateInfo.label} className={`mt-3 ${stateInfo.label==='aboutMe'?'w-[100%]':'w-40'} me-2`}>
+
+            <TextField
+              label={stateInfo.label}
+              placeholder={`Enter Your ${stateInfo.label}`}
+              value={stateInfo.stateName}
+              multiline={stateInfo.label==='aboutMe'?true:false}
+              rows={3}
+              sx={{
+                background: "#ffffff",
+                width: "100%",
+                borderTopLeftRadius: "12px",
+                borderTopRightRadius: "12px",
+              }}
+              onChange={(event) =>
+                handleOnchange(event.currentTarget.value, index)
+              }
+            />
           </div>
-        }
+        ))}
+      </div>
 
-       )} */}
-        
-        <div className="w-[100%] flex flex-wrap justify-center mb-8">
-          {singleArray.map((stateInfo,index)=>{
-         
-                    return <div key={stateInfo.label} className="mt-3 w-40 me-2" >
-                <TextField
-                  label={stateInfo.label}
-                  placeholder={`Enter Your ${stateInfo.label}`}
-                  value={stateInfo.stateName}
-                  color="info"
-                  sx={{background:'#859ca7',width:'100%',borderTopLeftRadius:'12px',borderTopRightRadius:'12px'}}
-                  onChange={(event) =>
-                    handleOnchange(event.currentTarget.value,index)
-                  } />
-        
-                  </div>
-          }    )}
-          </div>
-
-          <div className="w-[100%] flex flex-wrap justify-center mb-8">
-          {multiValuesArray.map((stateInfo,index)=>{
-
-            return<div key={stateInfo.label} className="mt-3 w-fit me-2 flex flex-wrap">
-               <TextField
-                    label={stateInfo.label}
-                    placeholder={`Enter ${stateInfo.label}`}
-                    value={stateInfo.state.value}
-                    color="success"
-                    multiline={true}
-                    rows={5}
-                    className="w-[100%]"
-                    sx={{background:'#859ca7',width:'100%'}}
-
-                    onChange={(x)=>
-                      handleOnMultiChange(x.currentTarget.value,index)
-                    }
-                     onKeyPress={(event)=>{handleKeyPress(event,index)}} 
-                  />
-                  <div style={{ marginTop: 10 }} className="flex flex-wrap">
-                    {stateInfo.state?.chips?.map((chip, i) => (
-                      <Button variant="contained" className="bg-transparent rounded-full" key={i} endIcon={<Close onClick={()=>{handleChipDelete(chip,index)}}
-                      />}>
-                          <Chip
-                        key={i}
-                        label={chip}
-                        className="bg-gray-200"
-                          style={{ marginRight: 5 }}
-                        
-                      />
-                  
-                      </Button>
-          ))}
-                    
-                  </div>
-                  <Divider />
+      <div className="w-[100%] flex flex-wrap justify-center mb-8">
+        {multiValuesArray.map((stateInfo, index) => (
+          <div key={stateInfo.label} className="mt-3 w-[100%] me-2 flex flex-wrap font-mono">
+            <TextField
+              label={stateInfo.label}
+              placeholder={`Enter ${stateInfo.label}`}
+              value={stateInfo.state.value}
+              color="success"
+              multiline={true}
+              rows={3}
+              className="w-[100%]"
+              sx={{ background: "#ffffff", width: "100%" }}
+              onChange={(x) => handleOnMultiChange(x.currentTarget.value, index)}
+              onKeyPress={(event) => {
+                handleKeyPress(event, index);
+              }}
+            />
+            <div style={{ marginTop: 10 }} className="flex flex-wrap">
+              {stateInfo.state?.chips?.map((chip, i) => (
+                <Chip
+                  key={i}
+                  label={chip}
+                  className="bg-primary text-white m-3"
+                  style={{ marginRight: 5,background:'cornflowerblue',maxWidth:'150px'}}
+                  onDelete={() => {
+                    handleChipDelete(chip, index);
+                  }}
+                />
+              ))}
             </div>
-          }
-          )}
+            <Divider />
           </div>
+        ))}
+      </div>
 
- <div className="flex justify-evenly">
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Save
+      <div className="flex w-[100%] justify-evenly">
+        <Button variant="contained" className="w-24" onClick={handleSubmit} >
+        <DoneOutlineIcon/>
         </Button>
 
-        <Button variant="outlined" color="secondary" onClick={handleReset}>
-          Reset
+        <Button variant="contained" color="error" className="w-24" onClick={handleReset}>
+          <DeleteForeverIcon/>
         </Button>
       </div>
     </div>
-    </div>
-  );
+  </div>
+);
 };
 
 export default Form;

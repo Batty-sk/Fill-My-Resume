@@ -1,5 +1,23 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log('Content script sent a message:', message);
+  if(message === 'turnOFF')
+  {
+    console.log('message',message,'sender',sender,sendResponse)
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      if (tabs && tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id, 'turnOFF', function(response) {
+          console.log('Message sent to content script');
+        });
+      }
+    });
+      }
+  else if('turnON'){
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      if (tabs && tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id,CreateContainer(), function(response) {
+          console.log('Message sent to content script');
+        });
+      }
+    });
 
 
 });
@@ -7,13 +25,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 const onPageLoad =(tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete') {
     console.log(`Tab ${tabId} has finished loading`,changeInfo,tab);
-    console.log(CreateContainer())
     chrome.tabs.sendMessage(tabId,CreateContainer(),(msg)=>{
 
       console.log('call back called',msg)
     });
-    console.log('message sent...')
-    console.log('localstorage',localStorage.getItem('name'))
     }
 };
 const onUpdateValues=(tabId)=>{

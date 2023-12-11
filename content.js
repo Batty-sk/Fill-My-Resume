@@ -3,14 +3,35 @@ let singleFields=null
 let multiFields=null
 let FilledContainer=null
 
-const handleMessage = (Data, sender, CallBackFun) => { //isme sida suggestion contatiner bhejneka 
+const handleMessage = (Data, sender, CallBackFun) => { 
+  const inputElements = document.getElementsByTagName("input");
+  const textAreaElements = document.getElementsByTagName("textarea");
+
+  const handleInputClick = (eve) => {
+    console.log("ys sir input sir", eve);
+    handleCreateAndInsert(eve);
+  };
+//isme sida suggestion contatiner bhejneka 
   console.log("Background script sent a message:", Data);
+  if(Data === 'turnOFF')
+  {
+    console.log('turining off .....')
+    if (inputElements) {
+      for (let i = 0; i < inputElements.length; i++) {
+        inputElements[i].removeEventListener("focus", handleInputClick);
+      }
+    }
+    if (textAreaElements) {
+      for (let i = 0; i < textAreaElements.length; i++) {
+        textAreaElements[i]?.removeEventListener("focus", handleInputClick);
+      }}
+
+      return 
+  }
+
 
   singleFields=Data.singleValues
   multiFields=Data.multiValues
-
-
-
 
     console.log('filled container ',FilledContainer)
 
@@ -18,16 +39,10 @@ const handleMessage = (Data, sender, CallBackFun) => { //isme sida suggestion co
 
 
 
-  const inputElements = document.getElementsByTagName("input");
-  const textAreaElements = document.getElementsByTagName("textarea");
+  
 
 
-
-
-  const handleInputClick = (eve) => {
-    console.log("ys sir input sir", eve);
-    handleCreateAndInsert(eve);
-  };
+  
 
   console.log(
     "input lements",
@@ -86,11 +101,11 @@ const handleCreateAndInsert = (event) => {
           suggestionContainer.style.height = "250px";
           suggestionContainer.style.maxWidth = "400px";
           suggestionContainer.style.width = "300px";
-          suggestionContainer.style.background = "linear-gradient(135deg, white, skyblue)";
+          suggestionContainer.style.background = "linear-gradient(169deg, #f8cfff, skyblue)";
           suggestionContainer.style.color = "#ecf0f1";
           suggestionContainer.style.padding = "10px";
           suggestionContainer.style.zIndex = "999";
-          suggestionContainer.style.overflow='auto'
+          suggestionContainer.style.overflowY='auto'
           
           suggestionContainer.style.scrollbarColor = "transparent transparent";
 
@@ -131,6 +146,7 @@ const handleCreateAndInsert = (event) => {
       const suggestion = document.createElement("div");
       suggestion.style.paddingBottom='20px'
       suggestion.style.fontFamily='monospace'
+      suggestion.style.width='100%'
       suggestion.style.color='black'
       suggestion.style.display = "flex";
       suggestion.style.flexWrap='wrap'
@@ -143,7 +159,9 @@ const handleCreateAndInsert = (event) => {
           container.style.textAlign='center'
                       const heading = document.createElement("h3");
                       heading.innerText=x
+                      heading.style.margin='revert'
                       const item = document.createElement("span");
+                      item.style.display='block'
                       item.style.padding='15px'
                       item.style.background='white'
                       item.style.borderRadius='20%'
@@ -169,12 +187,10 @@ const handleCreateAndInsert = (event) => {
         hr.style.color='pink'
 
         hr.style.margin='10px'
-        hr.style.marginTop='50px'
-
+        hr.style.width='100%'
         suggestion.appendChild(hr)
 
-
-
+        
                 multiSFields?.map((x, i) => {
 
                   
@@ -194,6 +210,7 @@ const handleCreateAndInsert = (event) => {
             multiFields[x].map((v) => {
               const item = document.createElement("span");
               item.style.padding='5px'
+              item.style.margin='2px'
               item.style.background='whitesmoke'
               item.style.width='fit'
               item.style.maxWidth='100px'
@@ -241,6 +258,7 @@ const handleCreateAndInsert = (event) => {
 
   FilledContainer.style.left = `${inputRect.left}px`;
 
+  
   FilledContainer.style.display='block'
   console.log('rendering the filled container',FilledContainer)
 parent.appendChild(FilledContainer)

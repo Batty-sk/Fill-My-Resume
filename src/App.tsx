@@ -10,12 +10,12 @@ const App:React.FC=()=> {
       // Your custom handling logic here
     };
   return (
-    <div className='border'>
+    <div className='h-[100%]'>
     <Header />
     <main>
-      <div className='flex flex-col items-center justify-center p-3  '>
+      <div className='flex flex-col items-center justify-center p-3  h-[100%] '>
           <ToggleBar />
-          <div className='mt-5 bg-[#13191E]  w-[90%]' style={{borderRadius:'30px',boxShadow:'0px 0px 3px white'}}>
+          <div className='mt-5 h-[100%]  w-[90%]' style={{background:'aliceblue',boxShadow:'0px 0px 3px blue'}}>
             <form onSubmit={handleSubmit}>
 
               <Form />
